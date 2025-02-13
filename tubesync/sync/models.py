@@ -296,7 +296,6 @@ class Source(models.Model):
         _('season'),
         default=1,
         help_text=_('Season number that will be used for playlist'),
-        editable=False
     )
     filter_text = models.CharField(
         _('filter string'),
