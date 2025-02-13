@@ -292,6 +292,12 @@ class Source(models.Model):
         help_text=_('If "delete old media" is ticked, the number of days after which '
                     'to automatically delete media')
     )
+    season = models.SmallIntegerField(
+        _('season'),
+        default=1,
+        help_text=_('Season number that will be used for playlist'),
+        editable=False
+    )
     filter_text = models.CharField(
         _('filter string'),
         max_length=200,
@@ -580,6 +586,7 @@ class Source(models.Model):
             'key': 'SoMeUnIqUiD',
             'format': '-'.join(fmt),
             'playlist_title': 'Some Playlist Title',
+            'season_order': '01',
             'video_order': '01',
             'ext': self.extension,
             'resolution': self.source_resolution if self.source_resolution else '',
@@ -1125,6 +1132,7 @@ class Media(models.Model):
             'key': self.key,
             'format': '-'.join(display_format['format']),
             'playlist_title': self.playlist_title,
+            'season_order': self.get_season_str(True),
             'video_order': self.get_episode_str(True),
             'ext': self.source.extension,
             'resolution': display_format['resolution'],
@@ -1390,12 +1398,7 @@ class Media(models.Model):
         nfo.append(showtitle)
         # season = upload date year
         season = nfo.makeelement('season', {})
-        if self.source.source_type == Source.SOURCE_TYPE_YOUTUBE_PLAYLIST:
-            # If it's a playlist, set season to 1
-            season.text = '1'
-        else:
-            # If it's not a playlist, set season to upload date year
-            season.text = str(self.upload_date.year) if self.upload_date else ''
+        season.text = self.get_season_str()
         season.tail = '\n  '
         nfo.append(season)
         # episode = number of video in the year
@@ -1551,6 +1554,22 @@ class Media(models.Model):
             if media == self:
                 return position_counter
             position_counter += 1
+
+    def calculate_season_number(self):
+        if self.source.source_type == Source.SOURCE_TYPE_YOUTUBE_PLAYLIST:
+            return str(self.upload_date.year) if self.upload_date else None
+        
+        return self.source.season
+
+    def get_season_str(self, use_padding=False):
+        episode_number = self.calculate_season_number()
+        if not episode_number:
+            return ''
+
+        if use_padding:
+            return f'{episode_number:02}'
+
+        return str(episode_number)
 
     def get_episode_str(self, use_padding=False):
         episode_number = self.calculate_episode_number()
