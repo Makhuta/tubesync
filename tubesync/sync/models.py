@@ -292,7 +292,7 @@ class Source(models.Model):
         help_text=_('If "delete old media" is ticked, the number of days after which '
                     'to automatically delete media')
     )
-    season = models.SmallIntegerField(
+    season = models.PositiveSmallIntegerField(
         _('season'),
         default=1,
         help_text=_('Season number that will be used for playlist'),
