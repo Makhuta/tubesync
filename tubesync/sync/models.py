@@ -1559,17 +1559,17 @@ class Media(models.Model):
         if self.source.source_type == Source.SOURCE_TYPE_YOUTUBE_PLAYLIST:
             return self.source.season
         
-        return str(self.upload_date.year) if self.upload_date else None
+        return self.upload_date.year if self.upload_date else None
 
     def get_season_str(self, use_padding=False):
-        episode_number = self.calculate_season_number()
-        if not episode_number:
+        season_number = self.calculate_season_number()
+        if season_number is None:
             return ''
 
         if use_padding:
-            return f'{episode_number:02}'
+            return f'{season_number:02}'
 
-        return str(episode_number)
+        return str(season_number)
 
     def get_episode_str(self, use_padding=False):
         episode_number = self.calculate_episode_number()
