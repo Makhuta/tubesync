@@ -1557,9 +1557,9 @@ class Media(models.Model):
 
     def calculate_season_number(self):
         if self.source.source_type == Source.SOURCE_TYPE_YOUTUBE_PLAYLIST:
-            return str(self.upload_date.year) if self.upload_date else None
+            return self.source.season
         
-        return self.source.season
+        return str(self.upload_date.year) if self.upload_date else None
 
     def get_season_str(self, use_padding=False):
         episode_number = self.calculate_season_number()
