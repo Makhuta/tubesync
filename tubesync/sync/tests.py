@@ -186,6 +186,7 @@ class FrontEndTestCase(TestCase):
             'index_schedule': 3600,
             'delete_old_media': False,
             'days_to_keep': 14,
+            'season': 1,
             'source_resolution': '1080p',
             'source_vcodec': 'VP9',
             'source_acodec': 'OPUS',
@@ -242,6 +243,7 @@ class FrontEndTestCase(TestCase):
             'index_schedule': Source.IndexSchedule.EVERY_HOUR,
             'delete_old_media': False,
             'days_to_keep': 14,
+            'season': 1,
             'source_resolution': Source.SOURCE_RESOLUTION_1080P,
             'source_vcodec': Source.SOURCE_VCODEC_VP9,
             'source_acodec': Source.SOURCE_ACODEC_OPUS,
@@ -279,6 +281,7 @@ class FrontEndTestCase(TestCase):
             'index_schedule': Source.IndexSchedule.EVERY_2_HOURS,  # changed
             'delete_old_media': False,
             'days_to_keep': 14,
+            'season': 1,
             'source_resolution': Source.SOURCE_RESOLUTION_1080P,
             'source_vcodec': Source.SOURCE_VCODEC_VP9,
             'source_acodec': Source.SOURCE_ACODEC_OPUS,
